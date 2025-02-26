@@ -47,6 +47,13 @@ guiconfig:
 	$(WEST) build -b $(BOARD) -t guiconfig $(OPT)
 
 #
+# initlevels
+#
+.PHONY: initlevel
+initlevel:
+	$(WEST) build -b $(BOARD) -t initilevels $(OPT)
+
+#
 # flash
 #
 .PHONY: flash
