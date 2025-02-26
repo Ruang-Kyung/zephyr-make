@@ -12,7 +12,7 @@ CMAKE_VERSION := 3.20.0
 #
 BOARD ?= mini_stm32h7b0
 TEST_RUN_BOARD ?= qemu_x86
-APP ?= application
+APPNAME ?= application
 OPT ?= # NULL
 
 #
@@ -30,23 +30,20 @@ EXTRA_OVERLAYS := $(foreach x, $(OVERLAYS), --extra-dtc-overlay $(x))
 #
 .PHONY: all
 all:
-	@clear
-	$(WEST) build -b $(BOARD) $(APP) $(EXTRA_OVERLAYS) $(OPT)
+	$(WEST) build -b $(BOARD) $(APPNAME) $(EXTRA_OVERLAYS) $(OPT)
 
 #
 # menuconfig
 #
-.PHONY: menuconfig
+.PHONY: menu
 menuconfig:
-	@clear
 	$(WEST) build -b $(BOARD) -t menuconfig $(OPT)
 
 #
 # guiconfig
 #
-.PHONY: guiconfig
+.PHONY: gui
 guiconfig:
-	@clear
 	$(WEST) build -b $(BOARD) -t guiconfig $(OPT)
 
 #
@@ -73,22 +70,6 @@ clean:
 #
 .PHONY: init
 init:
-	@mkdir -p $(APP)
-	@touch $(APP)/CMakeLists.txt
-	@echo -e 'cmake_minimum_required(VERSION $(CMAKE_VERSION))\n' >> $(APP)/CMakeLists.txt
-	@echo 'find_package(Zephyr REQUIRED HINTS $$ENV{ZEPHYR_BASE})' >> $(APP)/CMakeLists.txt
-	@echo -e 'project($(APP))\n' >> $(APP)/CMakeLists.txt
-	@echo -e 'include_directories($$ENV{ZEPHYR_BASE}/include)\n' >> $(APP)/CMakeLists.txt
-	@echo 'target_sources(app PRIVATE main.c)' >> $(APP)/CMakeLists.txt
-	@touch $(APP)/app.overlay
-	@touch $(APP)/Kconfig
-	@touch $(APP)/prj.conf
-	@touch $(APP)/main.c
-	@echo -e '#include <stdio.h>\n' >> $(APP)/main.c
-	@echo 'int main()' >> $(APP)/main.c
-	@echo '{' >> $(APP)/main.c
-	@echo -e '\tputs("Hello world");' >> $(APP)/main.c
-	@echo -e '}\n' >> $(APP)/main.c
 	$(WEST) init $(OPT)
 
 #
