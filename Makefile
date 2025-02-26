@@ -13,12 +13,12 @@ CMAKE_VERSION := 3.20.0
 BOARD ?= mini_stm32h7b0
 TEST_RUN_BOARD ?= qemu_x86
 APPNAME ?= application
-OPT ?= # NULL
+OPT ?=# None
 
 #
 # devicetree and overlay
 #
-OVERLAYS ?= # NULL
+OVERLAYS ?=# None
 EXTRA_OVERLAYS := $(foreach x, $(OVERLAYS), --extra-dtc-overlay $(x))
 
 # =====================================================
